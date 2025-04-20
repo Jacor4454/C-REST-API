@@ -7,9 +7,14 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <cstring>
+#include <unordered_map>
+
+#include "APIresponces/Base.h"
+#include "APIresponces/File.h"
 
 class HTTPServer{
-    std::string ipAddress;
+    // networking things
+    std::string ipAddress;  
     int port;
     int serverSocket;
     long incomingMessage;
@@ -17,9 +22,15 @@ class HTTPServer{
     unsigned int serverAddressLen;
     std::string serverMessage;
 
+    // responce things
+    std::unordered_map<std::string, Responce::Base*> lookup;
+
     public:
-    HTTPServer(std::string ip_address, int port);
+    HTTPServer(std::string, int);
     ~HTTPServer();
+
+    void handleCon();
+    void addAPI(std::string, Responce::Base*);
 };
 
 #endif

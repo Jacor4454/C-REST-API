@@ -38,6 +38,8 @@ class HTTPTest : public testing::Test {
 
 TEST_F(HTTPTest, MakeServer){
     HTTPServer myServ("0.0.0.0", 1231);
+    myServ.addAPI("/", new Responce::File("/home/cirilla/run_directory/C++/c-rest-api/notes.txt", ".txt"));
+    myServ.handleCon();
 }
 
 }

@@ -25,7 +25,7 @@ HTTPServer::HTTPServer(std::string ipAddress_, int port_):
     // make socket
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if(serverSocket < 0)
-        std::cout << "fail1\n";
+        throw std::runtime_error("cannot bind to socket");
 
     // define parameters
     serverAddress.sin_family = AF_INET;
@@ -37,40 +37,66 @@ HTTPServer::HTTPServer(std::string ipAddress_, int port_):
 
     // test
     listen(serverSocket, 5);
-    std::cout << "listerning...\n";
+
+}
+
+HTTPServer::~HTTPServer(){
+    close(serverSocket);
+
+    for(auto& [k, v] : lookup)
+        delete v;
+}
+
+void HTTPServer::addAPI(std::string path, Responce::Base* pointer){
+    lookup[path] = pointer;
+}
+
+void HTTPServer::handleCon(){
     int clientSocket = accept(serverSocket, nullptr, nullptr);
     if(clientSocket < 0)
-        std::cout << "fail2\n";
-    std::cout << "connected\n";
+        throw std::runtime_error("accept failed to create conntection");
+    
     #define b_len 1024
     char buffer[b_len] = {0};
     std::stringstream ss;
-    std::cout << "recieving...\n";
-    int packetindex = 0;
     int cIndex = -1;
     while(cIndex == -1){
-        std::cout << "loading packet: " << packetindex << "\n";
-        packetindex++;
-
+        // recieve some stoof
         recv(clientSocket, buffer, sizeof(buffer), 0);
-        cIndex = isEndBuffer(buffer, b_len);
 
+        // is end of headers?
+        cIndex = isEndBuffer(buffer, b_len);
         if(cIndex != -1)
             buffer[cIndex+4] = 0x0;
         ss << buffer;
     }
     std::cout << "Message from client: " << ss.str() << std::endl;
 
-    const char* message = 
-    "HTTP/1.1 200 OK\r\n"
-    "Content-Type: text/plain\r\n"
-    "\r\n"
-    "Hello"
-    ;
-    send(clientSocket, message, strlen(message), 0);
+    std::string RESTtype;
+    std::string RESTpath;
+    std::string RESThttp;
+    std::getline(ss, RESTtype, ' ');
+    std::getline(ss, RESTpath, ' ');
+    std::getline(ss, RESThttp, '\n');
 
-}
+    if(RESTtype != "GET")
+        throw std::runtime_error("incompatable to GET");
 
-HTTPServer::~HTTPServer(){
-    close(serverSocket);
+    Responce::Base* thing = lookup[RESTpath];
+
+    std::string message;
+
+    if(thing == nullptr){
+        // send responce
+        message = 
+        "HTTP/1.1 404 OK\r\n"
+        "Content-Type: text/plain\r\n"
+        "\r\n"
+        "404 Not Found"
+        ;
+    } else {
+        message = thing->Get();
+    }
+    
+    send(clientSocket, message.c_str(), strlen(message.c_str()), 0);
 }

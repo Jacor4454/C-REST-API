@@ -1,0 +1,7 @@
+
+polyMorphism
+add api responce:
+ - present file (str path&filename, str file extension)
+ - present JSON-like object (????)
+ - present function output (function<string()>)
+ 

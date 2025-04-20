@@ -1,0 +1,20 @@
+#ifndef CLASS_RESPONCE_FILE_H
+#define CLASS_RESPONCE_FILE_H
+
+#include "Base.h"
+#include <sstream>
+#include <fstream>
+
+namespace Responce{
+    class File : public Base{
+        std::string path;
+        std::string fileType;
+        public:
+        File(std::string path_, std::string fileType_);
+        ~File();
+        
+        std::string Get();
+    };
+}
+
+#endif
