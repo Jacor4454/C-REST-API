@@ -70,14 +70,29 @@ void HTTPServer::handleCon(){
             buffer[cIndex+4] = 0x0;
         ss << buffer;
     }
-    std::cout << "Message from client: " << ss.str() << std::endl;
 
+    std::unordered_map<std::string, std::string> headers;
+
+    std::string req;
+    std::getline(ss, req);
+
+    std::cout << req << "\n";
+
+    std::string s;
+    std::string s1;
+    char c;
+    while(std::getline(ss, s, ':') && s != "\r\n"){
+        std::getline(ss, s1, '\n');
+        headers[s] = s1;
+    }
+
+    std::stringstream ss1(req);
     std::string RESTtype;
     std::string RESTpath;
     std::string RESThttp;
-    std::getline(ss, RESTtype, ' ');
-    std::getline(ss, RESTpath, ' ');
-    std::getline(ss, RESThttp, '\n');
+    std::getline(ss1, RESTtype, ' ');
+    std::getline(ss1, RESTpath, ' ');
+    std::getline(ss1, RESThttp, '\n');
 
     if(RESTtype != "GET")
         throw std::runtime_error("incompatable to GET");
@@ -99,4 +114,5 @@ void HTTPServer::handleCon(){
     }
     
     send(clientSocket, message.c_str(), strlen(message.c_str()), 0);
+    close(clientSocket);
 }

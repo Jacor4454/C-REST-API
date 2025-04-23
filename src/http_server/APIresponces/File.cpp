@@ -3,6 +3,10 @@
 std::string getContentType(std::string s){
     if(s == ".txt")
         return "text/plain";
+    if(s == ".html")
+        return "text/html";
+    if(s == ".css")
+        return "text/css";
     
     throw std::runtime_error("file type not supported to send");
 }

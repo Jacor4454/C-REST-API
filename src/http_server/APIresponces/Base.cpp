@@ -9,3 +9,4 @@ namespace Responce{
 }
 
 #include "File.cpp"
+#include "Func.cpp"

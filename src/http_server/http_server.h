@@ -11,6 +11,7 @@
 
 #include "APIresponces/Base.h"
 #include "APIresponces/File.h"
+#include "APIresponces/Func.h"
 
 class HTTPServer{
     // networking things
