@@ -12,8 +12,8 @@ project: main.o http_server.o responces.o
 	$(COMPILER) $(CPPFLAGS) -o a $(OBJDIR)main.o $(OBJDIR)responces.o $(OBJDIR)api.o $(OBJDIR)http_server.o
 	./a
 
-test: test.o api.o http_server.o responces.o
-	$(COMPILER) $(CPPFLAGS) -Wall -g -pthread -o b $(OBJDIR)test.o $(OBJDIR)responces.o $(OBJDIR)api.o $(OBJDIR)http_server.o /usr/lib/libgtest.a
+test: test.o http_server.o responces.o
+	$(COMPILER) $(CPPFLAGS) -Wall -g -pthread -o b $(OBJDIR)test.o $(OBJDIR)responces.o $(OBJDIR)http_server.o /usr/lib/libgtest.a
 	./b
 
 

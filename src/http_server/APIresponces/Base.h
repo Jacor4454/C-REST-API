@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <vector>
 
 namespace Responce{
     class Base{
@@ -10,7 +11,7 @@ namespace Responce{
         Base();
         ~Base();
         
-        virtual std::string Get();
+        virtual std::vector<unsigned char>  Get();
     };
 }
 

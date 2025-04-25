@@ -12,6 +12,7 @@
 #include "APIresponces/Base.h"
 #include "APIresponces/File.h"
 #include "APIresponces/Func.h"
+#include "APIresponces/FakeSON.h"
 
 class HTTPServer{
     // networking things

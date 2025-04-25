@@ -3,7 +3,11 @@
 
 #include "Base.h"
 #include <sstream>
+#include <iostream>
 #include <fstream>
+#include <vector>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace Responce{
     class File : public Base{
@@ -13,7 +17,7 @@ namespace Responce{
         File(std::string path_, std::string fileType_);
         ~File();
         
-        std::string Get();
+        std::vector<unsigned char> Get();
     };
 }
 

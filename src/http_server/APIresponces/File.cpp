@@ -1,17 +1,8 @@
 #include "File.h"
 
-std::string getContentType(std::string s){
-    if(s == ".txt")
-        return "text/plain";
-    if(s == ".html")
-        return "text/html";
-    if(s == ".css")
-        return "text/css";
-    
-    throw std::runtime_error("file type not supported to send");
-}
-
 namespace Responce{
+    std::unordered_map<std::string, std::string> contentType({{".txt", "text/plain"}, {".html", "text/html"}, {".css", "text/css"}, {".ico", "image/x-icon"}, {".png", "image/png"}});
+
     File::File(std::string path_, std::string fileType_):
     path(path_),
     fileType(fileType_)
@@ -23,21 +14,22 @@ namespace Responce{
 
     }
 
-    std::string File::Get(){
+    std::vector<unsigned char> File::Get(){
         std::stringstream ss;
-        std::ifstream file(path);
-        
         ss << "HTTP/1.1 200 OK\r\n"
-        "Content-Type: " << getContentType(fileType) << "\r\n"
+        "Content-Type: " << contentType[fileType] << "\r\n"
         "\r\n";
+        std::string s = ss.str();
 
-        std::string s;
-        while(getline(file, s)){
-            ss << s;
-        }
-
+        std::ifstream file(path, std::ios::binary);
+        std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(file), {});
         file.close();
 
-        return ss.str();
+        std::vector<unsigned char> output;
+        output.reserve(s.size() + buffer.size());
+        output.insert(output.end(), s.begin(), s.end());
+        output.insert(output.end(), buffer.begin(), buffer.end());
+
+        return output;
     }
 }

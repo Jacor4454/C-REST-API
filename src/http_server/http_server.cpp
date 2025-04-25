@@ -99,20 +99,20 @@ void HTTPServer::handleCon(){
 
     Responce::Base* thing = lookup[RESTpath];
 
-    std::string message;
+    std::vector<unsigned char> message;
 
     if(thing == nullptr){
         // send responce
-        message = 
+        std::string s = 
         "HTTP/1.1 404 OK\r\n"
         "Content-Type: text/plain\r\n"
         "\r\n"
-        "404 Not Found"
-        ;
+        "404 Not Found";
+        message.insert(message.end(), s.begin(), s.end());
     } else {
         message = thing->Get();
     }
     
-    send(clientSocket, message.c_str(), strlen(message.c_str()), 0);
+    send(clientSocket, message.data(), message.size() * sizeof(unsigned char), 0);
     close(clientSocket);
 }

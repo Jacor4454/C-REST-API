@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../src/http_server/http_server.h"
+#include "../src/http_server/APIresponces/File.h"
 
 namespace my {
 namespace project {

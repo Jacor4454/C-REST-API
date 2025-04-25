@@ -12,7 +12,7 @@ namespace Responce{
         Func(std::function<std::string()> func_);
         ~Func();
         
-        std::string Get();
+        std::vector<unsigned char> Get();
     };
 }
 
