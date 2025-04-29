@@ -14,6 +14,15 @@
 #include "APIresponces/Func.h"
 #include "APIresponces/FakeSON.h"
 
+#include "../logging/logging.h"
+
+typedef enum{
+    GET,
+    POST,
+    PUT,
+    DELETE
+} APIActions;
+
 class HTTPServer{
     // networking things
     std::string ipAddress;  
@@ -25,14 +34,17 @@ class HTTPServer{
     std::string serverMessage;
 
     // responce things
-    std::unordered_map<std::string, Responce::Base*> lookup;
+    std::unordered_map<std::string, Responce::Base*> GET;
+    std::unordered_map<std::string, Responce::Base*> POST;
 
     public:
     HTTPServer(std::string, int);
     ~HTTPServer();
 
     void handleCon();
-    void addAPI(std::string, Responce::Base*);
+    void POSTurlEncoded(std::unordered_map<std::string, std::string>& headers, int clientSocket, Responce::Base* thing);
+    void respond(Responce::Base* thing, int clientSocket);
+    void addAPI(std::string, Responce::Base*, APIActions);
 };
 
 #endif

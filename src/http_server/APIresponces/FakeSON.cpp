@@ -1,9 +1,7 @@
 #include "FakeSON.h"
 
 namespace Responce{
-    JSON::JSON(std::unordered_map<std::string, std::string>* data_):
-    data(data_)
-    {
+    JSON::JSON(){
 
     }
 
@@ -17,7 +15,7 @@ namespace Responce{
         "Content-Type: text/json\r\n"
         "\r\n{\n";
 
-        for(auto& [n, x] : *data)
+        for(auto& [n, x] : data)
             ss << "\"" << n << "\" : " << x << ",\n";
         ss.seekp(-2, ss.cur);
         ss << "\n}\n";
@@ -28,4 +26,14 @@ namespace Responce{
 
         return output;
     }
+
+    // copy data into map
+    void JSON::Post(std::unordered_map<std::string, std::string>& m_reqs){
+        data.clear();
+        for(auto& [n, x] : m_reqs)
+            data[n] = x;
+    }
+
+    std::string& JSON::operator[](std::string& s) {return data[s];}
+    std::string& JSON::operator[](const char* s){return data[s];}
 }

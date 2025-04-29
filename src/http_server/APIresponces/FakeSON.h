@@ -8,12 +8,16 @@
 
 namespace Responce{
     class JSON : public Base{
-        std::unordered_map<std::string, std::string>* data;
+        std::unordered_map<std::string, std::string> data;
         public:
-        JSON(std::unordered_map<std::string, std::string>* data_);
+        JSON();
         ~JSON();
         
         std::vector<unsigned char> Get();
+        void Post(std::unordered_map<std::string, std::string>&);
+
+        std::string& operator[](std::string& s);
+        std::string& operator[](const char* s);
     };
 }
 

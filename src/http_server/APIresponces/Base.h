@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <unordered_map>
 #include <vector>
 
 namespace Responce{
@@ -12,6 +13,7 @@ namespace Responce{
         ~Base();
         
         virtual std::vector<unsigned char>  Get();
+        virtual void Post(std::unordered_map<std::string, std::string>&);
     };
 }
 
