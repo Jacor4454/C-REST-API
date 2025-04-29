@@ -17,6 +17,8 @@ test: test.o http_server.o responces.o
 	$(COMPILER) $(CPPFLAGS) -Wall -g -pthread -o b $(OBJDIR)test.o $(OBJDIR)responces.o $(OBJDIR)http_server.o /usr/lib/libgtest.a
 	./b
 
+object: http_server.o responces.o logging.o
+	ld -r -o rest.o $(OBJDIR)responces.o $(OBJDIR)logging.o $(OBJDIR)api.o $(OBJDIR)http_server.o
 
 http_server.o:
 	$(COMPILER) $(CPPFLAGS) -c -o $(OBJDIR)http_server.o $(HTTPDIR)http_server.cpp
