@@ -34,9 +34,10 @@ HTTPServer::HTTPServer(std::string ipAddress_, int port_):
 
     // bind
     bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
+    fcntl(serverSocket, F_SETFL, O_NONBLOCK);
 
     // start listening
-    listen(serverSocket, 5);
+    listen(serverSocket, 10);
     log::add("listening");
 }
 
@@ -47,8 +48,6 @@ HTTPServer::~HTTPServer(){
         delete v;
     for(auto& [k, v] : POST)
         delete v;
-
-    log::close();
 }
 
 void HTTPServer::addAPI(std::string path, Responce::Base* pointer, APIActions a){
@@ -70,8 +69,17 @@ void HTTPServer::addAPI(std::string path, Responce::Base* pointer, APIActions a)
 
 void HTTPServer::handleCon(){
     int clientSocket = accept(serverSocket, nullptr, nullptr);
-    if(clientSocket < 0)
-        throw std::runtime_error("accept failed to create conntection");
+    
+    if(clientSocket < 0){
+        // throw std::runtime_error("accept failed to create conntection");
+        // as is non blocking check a few errors and return
+        if(errno != EAGAIN && errno != EWOULDBLOCK)
+            throw std::runtime_error("accept failed");
+        
+        return;
+    }
+
+    log::add("contact");
     
     char buffer[2] = {0};
     std::stringstream ss;

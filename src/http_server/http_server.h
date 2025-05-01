@@ -2,10 +2,12 @@
 #define CLASS_HTTP_H
 
 #include <sys/socket.h>
+#include <sys/time.h>
 #include <iostream>
 #include <sstream>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <cstring>
 #include <unordered_map>
 
