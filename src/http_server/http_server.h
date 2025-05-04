@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 #include <netinet/in.h>
+#include <arpa/inet.h>
+#include <ifaddrs.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <cstring>
@@ -47,6 +49,8 @@ class HTTPServer{
     void POSTurlEncoded(std::unordered_map<std::string, std::string>& headers, int clientSocket, Responce::Base* thing);
     void respond(Responce::Base* thing, int clientSocket);
     void addAPI(std::string, Responce::Base*, APIActions);
+
+    std::string getAddr();
 };
 
 #endif

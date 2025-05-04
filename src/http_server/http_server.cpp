@@ -232,3 +232,38 @@ void HTTPServer::respond(Responce::Base* thing, int clientSocket){
     
     send(clientSocket, message.data(), message.size() * sizeof(unsigned char), 0);
 }
+
+std::string HTTPServer::getAddr(){
+    std::stringstream ss;
+
+    struct ifaddrs * ifAddrStruct=NULL;
+    struct ifaddrs * ifa=NULL;
+    void * tmpAddrPtr=NULL;
+
+    getifaddrs(&ifAddrStruct);
+
+    for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next) {
+        if (!ifa->ifa_addr) {
+            continue;
+        }
+        if (ifa->ifa_addr->sa_family == AF_INET) { // check it is IP4
+            // is a valid IP4 Address
+            tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
+            char addressBuffer[INET_ADDRSTRLEN];
+            inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
+            ss << ifa->ifa_name << ": http://" << addressBuffer << ":" << port << "\n";
+        } else if (ifa->ifa_addr->sa_family == AF_INET6) { // check it is IP6
+            // ipgnore ipv6
+
+            // // is a valid IP6 Address
+            // tmpAddrPtr=&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr;
+            // char addressBuffer[INET6_ADDRSTRLEN];
+            // inet_ntop(AF_INET6, tmpAddrPtr, addressBuffer, INET6_ADDRSTRLEN);
+            // std::cout << ifa->ifa_name << " IP Address " << addressBuffer << "\n";
+            // ss << addressBuffer; 
+        } 
+    }
+    if (ifAddrStruct!=NULL) freeifaddrs(ifAddrStruct);
+
+    return ss.str();
+}
