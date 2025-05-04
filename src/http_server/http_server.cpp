@@ -18,6 +18,9 @@ HTTPServer::HTTPServer(std::string ipAddress_, int port_):
     incomingMessage(),
     serverAddressLen(sizeof(serverAddress))
 {
+    if(port < 0)
+        return;
+    
     // make socket
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if(serverSocket < 0)
@@ -42,7 +45,8 @@ HTTPServer::HTTPServer(std::string ipAddress_, int port_):
 }
 
 HTTPServer::~HTTPServer(){
-    close(serverSocket);
+    if(port >= 0)
+        close(serverSocket);
 
     for(auto& [k, v] : GET)
         delete v;
