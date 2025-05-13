@@ -10,7 +10,7 @@ namespace Responce{
     class Base{
         public:
         Base();
-        ~Base();
+        virtual ~Base();
         
         virtual std::vector<unsigned char>  Get();
         virtual void Post(std::unordered_map<std::string, std::string>&);
