@@ -8,6 +8,7 @@
 
 namespace Responce{
     class JSON : public Base{
+        std::mutex data_mutex;
         std::unordered_map<std::string, std::string> data;
         public:
         JSON();
@@ -15,6 +16,9 @@ namespace Responce{
         
         std::vector<unsigned char> Get();
         void Post(std::unordered_map<std::string, std::string>&);
+
+        void lock();
+        void unlock();
 
         std::string& operator[](std::string& s);
         std::string& operator[](const char* s);

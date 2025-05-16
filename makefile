@@ -9,12 +9,12 @@ LOGDIR=./src/logging/
 RESPDIR=./src/http_server/APIresponces/
 
 
-project: main.o http_server.o responces.o logging.o
-	$(COMPILER) $(CPPFLAGS) -o a $(OBJDIR)main.o $(OBJDIR)responces.o $(OBJDIR)logging.o $(OBJDIR)api.o $(OBJDIR)http_server.o
+project: main.o object
+	$(COMPILER) $(CPPFLAGS) -o a $(OBJDIR)main.o rest.o
 	./a
 
-test: test.o http_server.o responces.o
-	$(COMPILER) $(CPPFLAGS) -Wall -g -pthread -o b $(OBJDIR)test.o $(OBJDIR)responces.o $(OBJDIR)http_server.o /usr/lib/libgtest.a
+test: test.o object
+	$(COMPILER) $(CPPFLAGS) -Wall -g -pthread -o b $(OBJDIR)test.o rest.o /usr/lib/libgtest.a
 	./b
 
 clean:
