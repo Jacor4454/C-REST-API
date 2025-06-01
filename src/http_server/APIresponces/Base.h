@@ -7,6 +7,7 @@
 #include <vector>
 
 namespace Responce{
+    static std::unordered_map<std::string, std::string> contentType({{".txt", "text/plain"}, {".html", "text/html"}, {".css", "text/css"}, {".ico", "image/x-icon"}, {".png", "image/png"}, {".svg", "image/svg+xml"}});
     class Base{
         public:
         Base();
@@ -16,5 +17,10 @@ namespace Responce{
         virtual void Post(std::unordered_map<std::string, std::string>&);
     };
 }
+
+#include "File.h"
+#include "Func.h"
+#include "FakeSON.h"
+#include "Text.h"
 
 #endif

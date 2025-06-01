@@ -9,10 +9,17 @@ namespace Responce{
     class Func : public Base{
         std::function<std::string()> func;
         public:
-        Func(std::function<std::string()> func_);
-        ~Func();
+        Func(std::function<std::string()> func_):func(func_){}
+        ~Func(){}
         
-        std::vector<unsigned char> Get();
+        std::vector<unsigned char> Get(){
+            std::string s = func();
+
+            std::vector<unsigned char> output;
+            output.insert(output.end(), s.begin(), s.end());
+
+            return output;
+        }
     };
 }
 

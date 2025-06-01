@@ -7,6 +7,7 @@ SRCDIR=./src/
 HTTPDIR=./src/http_server/
 LOGDIR=./src/logging/
 RESPDIR=./src/http_server/APIresponces/
+SVGDIR=./src/svg/
 
 
 project: main.o object
@@ -19,9 +20,13 @@ test: test.o object
 
 clean:
 	rm ./objects/*
+	make clean -C $(SVGDIR)
 
-object: http_server.o responces.o logging.o
-	ld -r -o rest.o $(OBJDIR)responces.o $(OBJDIR)logging.o $(OBJDIR)http_server.o
+svg.o:
+	make object -C $(SVGDIR)
+
+object: http_server.o responces.o logging.o svg.o
+	ld -r -o rest.o $(OBJDIR)responces.o $(SVGDIR)svg.o $(OBJDIR)logging.o $(OBJDIR)http_server.o
 
 http_server.o:
 	$(COMPILER) $(CPPFLAGS) -c -o $(OBJDIR)http_server.o $(HTTPDIR)http_server.cpp
